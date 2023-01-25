@@ -6,7 +6,7 @@ final class PackageGeneratorTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-//        record = false
+        // isRecording = true
     }
 
     func testGeneratedPackageWhenThereAreNoDependencies() throws {
@@ -17,12 +17,12 @@ final class PackageGeneratorTests: XCTestCase {
                                          packageListMaker: packageListMaker,
                                          fileCreator: spyFileCreator)
 
-        try generator.generateMasterPackageDescription(forSwiftToolsVersion: .init(5, 0, 0), macOSVersion: .init(12, 0, 0))
+        try generator.generateMasterPackageDescription(forSwiftToolsVersion: .init(5, 5, 0), macOSVersion: .init(12, 0, 0))
 
         assertSnapshot(matching: String(data: spyFileCreator.receivedContents!, encoding: .utf8)!, as: .lines)
     }
 
-    func testGeneratedPackageWhenThereAreDependencies() throws {
+    func testGeneratedPackageWhenThereAreDependenciesAndSwiftVersionIs5_5() throws {
         let packageListMaker = StubbedPackageListMaker(packages: [
             Package(name: "Dependency1", url: URL(string: "https://github.com/danger/dependency1")!, majorVersion: 1),
             Package(name: "Dependency2", url: URL(string: "https://github.com/danger/dependency2")!, majorVersion: 2),
@@ -34,12 +34,12 @@ final class PackageGeneratorTests: XCTestCase {
                                          packageListMaker: packageListMaker,
                                          fileCreator: spyFileCreator)
 
-        try generator.generateMasterPackageDescription(forSwiftToolsVersion: .init(5, 0, 0), macOSVersion: .init(12, 0, 0))
+        try generator.generateMasterPackageDescription(forSwiftToolsVersion: .init(5, 5, 0), macOSVersion: .init(12, 0, 0))
 
         assertSnapshot(matching: String(data: spyFileCreator.receivedContents!, encoding: .utf8)!, as: .lines)
     }
 
-    func testGeneratedPackageWhenThereAreDependenciesAndSwiftVersionIs5_2() throws {
+    func testGeneratedPackageWhenThereAreDependenciesAndSwiftVersionIsOver5_6() throws {
         let packageListMaker = StubbedPackageListMaker(packages: [
             Package(name: "Dependency1", url: URL(string: "https://github.com/danger/dependency1")!, majorVersion: 1),
             Package(name: "Dependency2", url: URL(string: "https://github.com/danger/dependency2")!, majorVersion: 2),
@@ -51,7 +51,7 @@ final class PackageGeneratorTests: XCTestCase {
                                          packageListMaker: packageListMaker,
                                          fileCreator: spyFileCreator)
 
-        try generator.generateMasterPackageDescription(forSwiftToolsVersion: .init(5, 2, 0), macOSVersion: .init(12, 0, 0))
+        try generator.generateMasterPackageDescription(forSwiftToolsVersion: .init(5, 6, 0), macOSVersion: .init(12, 0, 0))
 
         assertSnapshot(matching: String(data: spyFileCreator.receivedContents!, encoding: .utf8)!, as: .lines)
     }
@@ -64,7 +64,7 @@ final class PackageGeneratorTests: XCTestCase {
                                          packageListMaker: packageListMaker,
                                          fileCreator: spyFileCreator)
 
-        assertSnapshot(matching: generator.makePackageDescriptionHeader(forSwiftToolsVersion: .init(4, 2, 0)), as: .lines)
+        assertSnapshot(matching: generator.makePackageDescriptionHeader(forSwiftToolsVersion: .init(5, 5, 0)), as: .lines)
     }
 }
 

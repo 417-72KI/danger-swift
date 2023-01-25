@@ -48,15 +48,24 @@ struct PackageGenerator {
         }
 
         description.append("\n    ],\n")
-        description.append("    targets: [.executableTarget(name: \"\(masterPackageName)\", dependencies: [")
-
-        if !packages.isEmpty {
-            description.append("\"")
-            description.append(packages.map(\.name).joined(separator: "\", \""))
-            description.append("\"")
+        if toolsVersion >= Version(5, 6, 0) {
+            description.append("    targets: [\n")
+            description.append("        .executableTarget(name: \"\(masterPackageName)\", dependencies: [\n")
+            packages.forEach {
+                description.append("            ")
+                description.append(#".product(name: "\#($0.name)", package: "\#($0.url.lastPathComponent.replacingOccurrences(of: ".git", with: ""))"),"#)
+                description.append("\n")
+            }
+            description.append("        ])\n    ],\n")
+        } else {
+            description.append("    targets: [.executableTarget(name: \"\(masterPackageName)\", dependencies: [")
+            if !packages.isEmpty {
+                description.append("\"")
+                description.append(packages.map(\.name).joined(separator: "\", \""))
+                description.append("\"")
+            }
+            description.append("])],\n")
         }
-
-        description.append("])],\n")
 
         var versionString = String(toolsVersion.major)
 

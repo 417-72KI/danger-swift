@@ -13,8 +13,8 @@ final class InlineDependenciesFinderTests: XCTestCase {
         let result = try dependenciesFinder.resolveInlineDependencies(fromPath: "path")
 
         XCTAssertEqual(result, [
-            InlineDependenciesFinder.InlineDependency(url: URL(string: "http://danger.systems")!, major: nil),
-            InlineDependenciesFinder.InlineDependency(url: URL(string: "http://danger.systems/swift")!, major: 2),
+            InlineDependenciesFinder.InlineDependency(moduleName: "LibB", url: URL(string: "http://danger.systems")!, major: nil),
+            InlineDependenciesFinder.InlineDependency(moduleName: "LibC", url: URL(string: "http://danger.systems/swift")!, major: 2),
         ])
     }
 

@@ -19,11 +19,15 @@ struct InlineDependenciesFinder {
             if line.hasPrefix("import ") {
                 let components = line.components(separatedBy: config.dependencyPrefix)
                 guard components.count > 1,
+                      let firstComponent = components.first,
                       let lastComponent = components.last
                 else {
                     continue
                 }
 
+                let moduleToImport = firstComponent
+                    .trimmingCharacters(in: .whitespaces)
+                    .components(separatedBy: " ")[1]
                 let splittedImportString = lastComponent
                     .trimmingCharacters(in: .whitespaces)
                     .components(separatedBy: " " + config.majorVersionPrefix)
@@ -34,7 +38,9 @@ struct InlineDependenciesFinder {
 
                 let majorVersion: Int? = splittedImportString.count > 1 ? Int(splittedImportString[1]) : nil
 
-                result.append(InlineDependency(url: url, major: majorVersion))
+                result.append(InlineDependency(moduleName: moduleToImport,
+                                               url: url,
+                                               major: majorVersion))
             } else if let firstCharacter = line.unicodeScalars.first,
                       !CharacterSet.alphanumerics.contains(firstCharacter) {
                 break
@@ -53,6 +59,7 @@ extension InlineDependenciesFinder {
 
 extension InlineDependenciesFinder {
     struct InlineDependency: Equatable {
+        let moduleName: String
         let url: URL
         let major: Int?
     }

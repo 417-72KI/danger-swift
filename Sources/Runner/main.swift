@@ -17,7 +17,7 @@ private func runCommand(_ command: DangerCommand, logger: Logger) throws {
     case .runner:
         try runDanger(logger: logger)
     case .clean:
-        try cleanupDanger(logger: logger)
+        try cleanupDanger(logger: logger, dryRun: CommandLine.arguments.contains("--dry-run"))
     }
 }
 

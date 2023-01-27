@@ -205,11 +205,15 @@ public struct PackageManager {
 }
 
 extension PackageManager {
-    func cleanup() throws {
-        logger.debug("Removing: \(folder)")
+    func cleanup(dryRun: Bool) throws {
+        logger.debug("Removing: '\(folder)'")
         let fileManager = FileManager.default
         guard fileManager.fileExists(atPath: folder) else {
-            logger.logWarning("\(folder) has already removed or not created yet.")
+            logger.logWarning("'\(folder)' has already removed or not created yet.")
+            return
+        }
+        if dryRun {
+            logger.logInfo("Dry-run mode. Would remove '\(folder)'.")
             return
         }
         try fileManager.removeItem(atPath: folder)

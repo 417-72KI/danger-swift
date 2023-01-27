@@ -99,6 +99,20 @@ public struct ScriptManager {
     }
 }
 
+public extension ScriptManager {
+    func cleanup() throws {
+        try packageManager.cleanup()
+
+        logger.debug("Removing: \(folder)")
+        let fileManager = FileManager.default
+        guard fileManager.fileExists(atPath: folder) else {
+            logger.logWarning("\(folder) has already removed or not created yet.")
+            return
+        }
+        try fileManager.removeItem(atPath: folder)
+    }
+}
+
 public final class Script {
     enum Errors: Error {
         case watchingFailed(String)

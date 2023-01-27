@@ -4,6 +4,7 @@ public enum DangerCommand: String, CaseIterable {
     case pr
     case edit
     case runner
+    case clean
 
     var commandDescription: String {
         switch self {
@@ -17,6 +18,8 @@ public enum DangerCommand: String, CaseIterable {
             return "Run danger-swift locally against a PR"
         case .runner:
             return "Use this to trigger the Dangerfile evaluation"
+        case .clean:
+            return "Clean up local cache"
         }
     }
 

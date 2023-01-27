@@ -16,6 +16,8 @@ private func runCommand(_ command: DangerCommand, logger: Logger) throws {
         try editDanger(logger: logger)
     case .runner:
         try runDanger(logger: logger)
+    case .clean:
+        try cleanupDanger(logger: logger)
     }
 }
 

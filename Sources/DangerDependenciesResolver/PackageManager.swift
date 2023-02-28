@@ -217,6 +217,7 @@ extension PackageManager {
             return
         }
         try fileManager.removeItem(atPath: folder)
+        logger.logInfo("Removed: '\(folder)'")
     }
 }
 

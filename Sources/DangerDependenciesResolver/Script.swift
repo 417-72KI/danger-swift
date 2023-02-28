@@ -114,6 +114,7 @@ public extension ScriptManager {
             return
         }
         try fileManager.removeItem(atPath: folder)
+        logger.logInfo("Removed: '\(folder)'")
     }
 }
 
